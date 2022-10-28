@@ -21,7 +21,7 @@ namespace UsuariosApi.Controllers
         {
             Result resultado = _loginservice.LogaUsuario(request);
             if (resultado.IsFailed)
-                return Unauthorized();
+                return Unauthorized(resultado.Errors);
             return Ok();
         }
     }

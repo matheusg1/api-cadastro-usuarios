@@ -1,22 +1,30 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Linq;
 using UsuariosApi.Data.Dtos.Requests;
+using UsuariosApi.Models;
 
 namespace UsuariosApi.Services
 {
     public class LoginService
     {
         private SignInManager<IdentityUser<int>> _signInManager;
+        private TokenService _tokenService;
         public LoginService(SignInManager<IdentityUser<int>> signInManager)
         {
             _signInManager = signInManager;
         }
+
         public Result LogaUsuario(LoginRequest request)
         {
             var resultadoIdentity = _signInManager.PasswordSignInAsync(request.Username, request.Password, false, false);
             if (resultadoIdentity.Result.Succeeded)
-                return Result.Ok();
+            {
+                var identityUser = _signInManager.UserManager.Users.FirstOrDefault(u => u.NormalizedUserName == request.Username.ToUpper());
+                Token token = _tokenService.createToken(identityUser);
+                return Result.Ok().WithSuccess(token.Value);
+            }
             return Result.Fail("Login falhou");
         }
     }
