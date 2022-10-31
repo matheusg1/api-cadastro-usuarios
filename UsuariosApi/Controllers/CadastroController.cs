@@ -1,11 +1,9 @@
 ﻿using FluentResults;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using UsuariosApi.Data.Dtos;
 using UsuariosApi.Data.Dtos.Requests;
 using UsuariosApi.Services;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace UsuariosApi.Controllers
 {
@@ -29,7 +27,7 @@ namespace UsuariosApi.Controllers
         }
 
         [HttpPost("/ativa")]
-        public IActionResult AtivaContaUsuario(AtivaContaRequest request)
+        public IActionResult AtivaContaUsuario([FromQuery]AtivaContaRequest request)
         {
             Result resultado = _cadastroService.AtivaContaUsuario(request);
             if (resultado.IsFailed)

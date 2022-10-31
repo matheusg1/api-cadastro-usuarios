@@ -33,7 +33,7 @@ namespace UsuariosApi.Services
             if (resultadoIdentity.Result.Succeeded)
             {
                 var code = _userManager.GenerateEmailConfirmationTokenAsync(usuarioIdentity).Result;
-                _emailService.EnviarEmail();
+                _emailService.EnviarEmail(new[] { usuarioIdentity.Email}, "Link de ativação", usuarioIdentity.Id, code);
                 return Result.Ok().WithSuccess(code);
             }
 
