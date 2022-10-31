@@ -28,14 +28,17 @@ namespace UsuariosApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<UserDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("UsuarioConnection")));
+
             services
-               .AddIdentity<IdentityUser<int>, IdentityRole<int>>()
-               .AddEntityFrameworkStores<UserDbContext>();
+               .AddIdentity<IdentityUser<int>, IdentityRole<int>>(
+                opt => opt.SignIn.RequireConfirmedEmail = true)
+               .AddEntityFrameworkStores<UserDbContext>()
+               .AddDefaultTokenProviders();
+
             services.AddScoped<CadastroService, CadastroService>();
             services.AddScoped<LoginService, LoginService>();
             services.AddScoped<TokenService, TokenService>();
             services.AddScoped<LogoutService, LogoutService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
