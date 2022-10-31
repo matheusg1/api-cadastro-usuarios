@@ -33,6 +33,8 @@ namespace UsuariosApi
                .AddEntityFrameworkStores<UserDbContext>();
             services.AddScoped<CadastroService, CadastroService>();
             services.AddScoped<LoginService, LoginService>();
+            services.AddScoped<TokenService, TokenService>();
+            services.AddScoped<LogoutService, LogoutService>();
 
         }
 
