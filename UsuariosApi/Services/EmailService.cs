@@ -43,7 +43,7 @@ namespace UsuariosApi.Services
                 try
                 {
                     client.Connect(_configuration.GetValue<string>("EmailSettings:SmtpServer"),
-                        _configuration.GetValue<int>("EmailSettings:Port"), false);
+                        _configuration.GetValue<int>("EmailSettings:Port"), true);
 
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
 
