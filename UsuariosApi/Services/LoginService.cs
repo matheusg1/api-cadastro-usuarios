@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
 using UsuariosApi.Data.Dtos.Requests;
+using UsuariosApi.Data.Requests;
 using UsuariosApi.Models;
 
 namespace UsuariosApi.Services
@@ -29,6 +30,18 @@ namespace UsuariosApi.Services
                 return Result.Ok().WithSuccess(token.Value);
             }
             return Result.Fail("Login falhou");
+        }
+
+        public Result SolicitaResetSenhaUsuario(SolicitaResetRequest request)
+        {
+            IdentityUser<int> identityUser = _signInManager.UserManager.Users.FirstOrDefault(u => u.NormalizedEmail == request.Email.ToUpper());
+            
+            if (identityUser != null)
+            {
+                string codigoDeRecuperacao = _signInManager.UserManager.GeneratePasswordResetTokenAsync(identityUser).Result;
+                return Result.Ok().WithSuccess(codigoDeRecuperacao);
+            }
+            return Result.Fail("Falha ao solicitar redefinição");
         }
     }
 }
